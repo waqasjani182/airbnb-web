@@ -1,0 +1,37 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+AVAILABILITY_CHECK_IMPLEMENTATION.md
+BOOKING_CREATION_RESPONSE_UPDATE.md
+BOOKING_LIST_UPDATES.md
+PROFILE_AND_PROPERTY_IMPLEMENTATION.md
+PROPERTY_BOOKINGS_MANAGEMENT.md
+PROPERTY_CREATION_IMPLEMENTATION.md
+PROPERTY_DETAILS_IMPLEMENTATION.md
+REACT_AIRBNB_DEVELOPMENT_GUIDE.md
+SEARCH_IMPLEMENTATION.md
+docs/API_Implementation_Guide.md
+docs/booking-management-implementation-guide.md
+docs/Implementation_Checklist.md
+docs/Quick_Reference.md
