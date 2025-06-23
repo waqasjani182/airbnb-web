@@ -25,11 +25,11 @@ export interface LoginRequest {
 }
 
 export interface SignupRequest {
-  first_name: string;
-  last_name: string;
+  name: string;
   email: string;
   password: string;
-  phone: string;
+  address: string;
+  phone_No: string;
 }
 
 export interface AuthResponse {
@@ -57,7 +57,6 @@ export interface UpdateUserRequest {
 // For backend API profile update (uses different field names)
 export interface UpdateProfileRequest {
   name?: string;
-  email?: string;
   address?: string;
   phone_No?: string;
 }

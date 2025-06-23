@@ -15,9 +15,8 @@ import { useErrorHandler } from '../../hooks';
 import { getImageUrl } from '../../utils/helpers';
 
 const profileSchema = z.object({
-  first_name: z.string().min(2, 'First name must be at least 2 characters'),
-  last_name: z.string().min(2, 'Last name must be at least 2 characters'),
-  phone: z.string().optional().or(z.literal('')),
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  phone_No: z.string().optional().or(z.literal('')),
   address: z.string().optional().or(z.literal('')),
 });
 
@@ -51,9 +50,8 @@ const Profile: React.FC = () => {
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      first_name: user?.first_name || '',
-      last_name: user?.last_name || '',
-      phone: user?.phone || '',
+      name: user ? `${user.first_name} ${user.last_name}`.trim() : '',
+      phone_No: user?.phone || '',
       address: user?.address || '',
     },
   });
@@ -88,18 +86,14 @@ const Profile: React.FC = () => {
       // Create FormData for backend API
       const formData = new FormData();
 
-      // Backend expects 'name' field instead of separate first_name/last_name
-      const fullName = `${data.first_name} ${data.last_name}`.trim();
-      console.log('Full name:', fullName);
-
       // Add required fields
-      formData.append('name', fullName);
-      formData.append('email', user.email); // Keep existing email
+      formData.append('name', data.name.trim());
+      console.log('Name:', data.name.trim());
 
       // Add optional fields only if they have values
-      if (data.phone && data.phone.trim()) {
-        formData.append('phone_No', data.phone.trim());
-        console.log('Adding phone:', data.phone.trim());
+      if (data.phone_No && data.phone_No.trim()) {
+        formData.append('phone_No', data.phone_No.trim());
+        console.log('Adding phone:', data.phone_No.trim());
       }
 
       if (data.address && data.address.trim()) {
@@ -138,12 +132,17 @@ const Profile: React.FC = () => {
         console.log('New profile image URL:', updatedProfileImage);
       }
 
+      // Split name back into first_name and last_name for local state
+      const nameParts = data.name.trim().split(' ');
+      const first_name = nameParts[0] || '';
+      const last_name = nameParts.slice(1).join(' ') || '';
+
       // Update user with the new data, preserving existing fields
       const updatedUser = {
         ...user,
-        first_name: data.first_name,
-        last_name: data.last_name,
-        phone: data.phone || user.phone,
+        first_name,
+        last_name,
+        phone: data.phone_No || user.phone,
         address: data.address || user.address,
         profile_image: updatedProfileImage,
       };
@@ -371,24 +370,17 @@ const Profile: React.FC = () => {
                 }}
                 className="space-y-6"
               >
-                <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    label="First name"
-                    {...register('first_name')}
-                    error={errors.first_name?.message}
-                  />
-                  <Input
-                    label="Last name"
-                    {...register('last_name')}
-                    error={errors.last_name?.message}
-                  />
-                </div>
+                <Input
+                  label="Full name"
+                  {...register('name')}
+                  error={errors.name?.message}
+                />
 
                 <Input
                   label="Phone number"
                   type="tel"
-                  {...register('phone')}
-                  error={errors.phone?.message}
+                  {...register('phone_No')}
+                  error={errors.phone_No?.message}
                   helperText="Optional - helps with booking confirmations"
                 />
 

@@ -15,12 +15,12 @@ import { ROUTES } from '../../utils/constants';
 import { transformUserProfile } from '../../types';
 
 const signupSchema = z.object({
-  first_name: z.string().min(2, 'First name must be at least 2 characters'),
-  last_name: z.string().min(2, 'Last name must be at least 2 characters'),
+  name: z.string().min(2, 'Name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   confirmPassword: z.string(),
-  phone: z.string().min(10, 'Please enter a valid phone number'),
+  address: z.string().min(5, 'Address must be at least 5 characters'),
+  phone_No: z.string().min(10, 'Please enter a valid phone number'),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
@@ -43,12 +43,12 @@ const Signup: React.FC = () => {
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      first_name: '',
-      last_name: '',
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
-      phone: '',
+      address: '',
+      phone_No: '',
     },
   });
 
@@ -99,23 +99,13 @@ const Signup: React.FC = () => {
                 </div>
               )}
 
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  label="First name"
-                  type="text"
-                  autoComplete="given-name"
-                  {...register('first_name')}
-                  error={errors.first_name?.message}
-                />
-
-                <Input
-                  label="Last name"
-                  type="text"
-                  autoComplete="family-name"
-                  {...register('last_name')}
-                  error={errors.last_name?.message}
-                />
-              </div>
+              <Input
+                label="Full name"
+                type="text"
+                autoComplete="name"
+                {...register('name')}
+                error={errors.name?.message}
+              />
 
               <Input
                 label="Email address"
@@ -126,11 +116,19 @@ const Signup: React.FC = () => {
               />
 
               <Input
+                label="Address"
+                type="text"
+                autoComplete="address-line1"
+                {...register('address')}
+                error={errors.address?.message}
+              />
+
+              <Input
                 label="Phone number"
                 type="tel"
                 autoComplete="tel"
-                {...register('phone')}
-                error={errors.phone?.message}
+                {...register('phone_No')}
+                error={errors.phone_No?.message}
               />
 
               <Input
