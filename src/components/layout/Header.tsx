@@ -49,6 +49,12 @@ const Header: React.FC = () => {
                   Manage Bookings
                 </Link>
                 <Link
+                  to={ROUTES.MY_REVIEWS}
+                  className="text-gray-700 hover:text-red-600 transition-colors font-medium"
+                >
+                  My Reviews
+                </Link>
+                <Link
                   to={ROUTES.UPLOAD_PROPERTY}
                   className="text-gray-700 hover:text-red-600 transition-colors font-medium"
                 >

@@ -7,7 +7,7 @@ import { z } from 'zod';
 import toast from 'react-hot-toast';
 import { RootState } from '../../store';
 import { Layout } from '../../components/layout';
-import { Button, Input, Card, Loading } from '../../components/ui';
+import { Button, Input, Card, Loading, LocationPicker } from '../../components/ui';
 import { useCreatePropertyMutation } from '../../services/propertyApi';
 import { useGetFacilitiesQuery } from '../../services/facilitiesApi';
 import { useErrorHandler } from '../../hooks';
@@ -90,6 +90,18 @@ const UploadProperty: React.FC = () => {
       setValue('facilities', newFacilities);
       return newFacilities;
     });
+  };
+
+  const handleLocationChange = (location: {
+    address: string;
+    city: string;
+    latitude: number;
+    longitude: number;
+  }) => {
+    setValue('address', location.address);
+    setValue('city', location.city);
+    setValue('latitude', location.latitude);
+    setValue('longitude', location.longitude);
   };
 
   const onSubmit = async (data: PropertyFormData) => {
@@ -263,41 +275,22 @@ const UploadProperty: React.FC = () => {
           {/* Location */}
           <Card>
             <h2 className="text-xl font-semibold mb-6">Location</h2>
-            <div className="space-y-6">
-              <Input
-                label="Address"
-                {...register('address')}
-                error={errors.address?.message}
-                placeholder="123 Main Street"
-              />
-
-              <Input
-                label="City"
-                {...register('city')}
-                error={errors.city?.message}
-                placeholder="New York"
-              />
-
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  label="Latitude"
-                  type="number"
-                  step="any"
-                  {...register('latitude', { valueAsNumber: true })}
-                  error={errors.latitude?.message}
-                  placeholder="40.7128"
-                />
-
-                <Input
-                  label="Longitude"
-                  type="number"
-                  step="any"
-                  {...register('longitude', { valueAsNumber: true })}
-                  error={errors.longitude?.message}
-                  placeholder="-74.0060"
-                />
+            <LocationPicker
+              onLocationChange={handleLocationChange}
+              initialLocation={{
+                address: watch('address'),
+                city: watch('city'),
+                latitude: watch('latitude'),
+                longitude: watch('longitude'),
+              }}
+            />
+            {(errors.address || errors.city || errors.latitude || errors.longitude) && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-600">
+                  Please select a valid location using the map or search above.
+                </p>
               </div>
-            </div>
+            )}
           </Card>
 
           {/* Images */}

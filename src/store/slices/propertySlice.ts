@@ -22,6 +22,8 @@ const initialState: PropertyState = {
   searchParams: {
     page: 1,
     limit: 12,
+    min_rating: undefined,
+    max_rating: undefined,
   },
   isLoading: false,
   error: null,

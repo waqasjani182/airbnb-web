@@ -72,6 +72,8 @@ export interface BookingListItem {
   host_name?: string; // For guest view
   guest_name?: string; // For host view
   property_image: string;
+  has_review?: boolean; // Whether the guest has reviewed the property/host
+  has_host_review?: boolean; // Whether the host has reviewed the guest
 }
 
 export interface BookingResponse {

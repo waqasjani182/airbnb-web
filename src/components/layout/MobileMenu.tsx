@@ -105,6 +105,13 @@ const MobileMenu: React.FC = () => {
                     My Properties
                   </Link>
                   <Link
+                    to={ROUTES.MY_REVIEWS}
+                    onClick={closeMenu}
+                    className="block px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  >
+                    My Reviews
+                  </Link>
+                  <Link
                     to={ROUTES.UPLOAD_PROPERTY}
                     onClick={closeMenu}
                     className="block px-4 py-3 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"

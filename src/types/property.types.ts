@@ -64,6 +64,10 @@ export interface PropertySearchParams {
   max_price?: number;
   property_type?: string;
   bedrooms?: number;
+  min_rating?: number;
+  max_rating?: number;
+  check_in_date?: string;
+  check_out_date?: string;
   page?: number;
   limit?: number;
 }

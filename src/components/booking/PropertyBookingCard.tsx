@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookingListItem } from '../../types/booking.types';
 import { Card, Badge, Button } from '../ui';
+import { HostReviewModal } from '../reviews';
 import { formatCurrency, formatDate } from '../../utils/helpers';
 
 interface PropertyBookingCardProps {
   booking: BookingListItem;
   onUpdateStatus?: (bookingId: number, status: string) => void;
   onViewGuest?: (guestId: number) => void;
+  showHostReviewActions?: boolean;
+  hasHostReview?: boolean;
 }
 
 const PropertyBookingCard: React.FC<PropertyBookingCardProps> = ({
   booking,
   onUpdateStatus,
   onViewGuest,
+  showHostReviewActions = false,
+  hasHostReview = false,
 }) => {
+  const [showHostReviewModal, setShowHostReviewModal] = useState(false);
   const getStatusVariant = (status: string) => {
     switch (status) {
       case 'Confirmed':
@@ -124,6 +130,29 @@ const PropertyBookingCard: React.FC<PropertyBookingCardProps> = ({
             </Button>
           </Link>
           
+          {/* Host Review Actions for Completed Bookings */}
+          {showHostReviewActions && booking.status === 'Completed' && (
+            <>
+              {!hasHostReview ? (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => setShowHostReviewModal(true)}
+                >
+                  Review Guest
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowHostReviewModal(true)}
+                >
+                  Edit Guest Review
+                </Button>
+              )}
+            </>
+          )}
+
           {/* Revenue indicator */}
           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
             💰 Revenue: {formatCurrency(booking.total_amount)}
@@ -202,6 +231,17 @@ const PropertyBookingCard: React.FC<PropertyBookingCardProps> = ({
             </span>
           </div>
         </div>
+      )}
+
+      {/* Host Review Modal */}
+      {showHostReviewModal && (
+        <HostReviewModal
+          isOpen={showHostReviewModal}
+          onClose={() => setShowHostReviewModal(false)}
+          bookingId={booking.booking_id}
+          guestName={booking.guest_name || 'Guest'}
+          propertyTitle={booking.title}
+        />
       )}
     </Card>
   );

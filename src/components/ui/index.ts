@@ -6,3 +6,8 @@ export { default as Loading } from './Loading';
 export { default as Badge } from './Badge';
 export { default as SearchInput } from './SearchInput';
 export { default as LazyImage } from './LazyImage';
+export { default as StarRating } from './StarRating';
+export { default as RatingFilter } from './RatingFilter';
+export { default as Map } from './Map';
+export { default as LocationPicker } from './LocationPicker';
+export { default as CityPicker } from './CityPicker';

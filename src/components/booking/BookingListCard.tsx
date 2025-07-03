@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { BookingListItem } from '../../types/booking.types';
 import { Card, Badge, Button } from '../ui';
+import { ReviewModal } from '../reviews';
 import { formatCurrency, formatDate } from '../../utils/helpers';
 
 interface BookingListCardProps {
   booking: BookingListItem;
   onUpdateStatus?: (bookingId: number, status: string) => void;
   showHostActions?: boolean;
+  showReviewActions?: boolean;
+  hasReview?: boolean;
 }
 
 const BookingListCard: React.FC<BookingListCardProps> = ({
   booking,
   onUpdateStatus,
   showHostActions = false,
+  showReviewActions = false,
+  hasReview = false,
 }) => {
+  const [showReviewModal, setShowReviewModal] = useState(false);
   const getStatusVariant = (status: string) => {
     switch (status) {
       case 'Confirmed':
@@ -33,6 +39,21 @@ const BookingListCard: React.FC<BookingListCardProps> = ({
   const isUpcoming = new Date(booking.start_date) > new Date();
   const isActive = new Date(booking.start_date) <= new Date() && new Date(booking.end_date) >= new Date();
   const isPast = new Date(booking.end_date) < new Date();
+
+  // Debug logging for review button
+  useEffect(() => {
+    if (showReviewActions) {
+      console.log('Review Debug:', {
+        bookingId: booking.booking_id,
+        status: booking.status,
+        isPast,
+        hasReview,
+        showReviewActions,
+        endDate: booking.end_date,
+        now: new Date().toISOString()
+      });
+    }
+  }, [booking, showReviewActions, isPast, hasReview]);
 
   return (
     <Card>
@@ -103,6 +124,29 @@ const BookingListCard: React.FC<BookingListCardProps> = ({
               View Details
             </Button>
           </Link>
+
+          {/* Review Actions for Completed Bookings */}
+          {showReviewActions && booking.status === 'Completed'  && (
+            <>
+              {!hasReview ? (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => setShowReviewModal(true)}
+                >
+                  Write Review
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowReviewModal(true)}
+                >
+                  Edit Review
+                </Button>
+              )}
+            </>
+          )}
 
           {/* Quick status indicators */}
           {isUpcoming && booking.status === 'Confirmed' && (
@@ -177,6 +221,17 @@ const BookingListCard: React.FC<BookingListCardProps> = ({
             </span>
           </div>
         </div>
+      )}
+
+      {/* Review Modal */}
+      {showReviewModal && (
+        <ReviewModal
+          isOpen={showReviewModal}
+          onClose={() => setShowReviewModal(false)}
+          bookingId={booking.booking_id}
+          propertyId={booking.property_id}
+          propertyTitle={booking.title}
+        />
       )}
     </Card>
   );

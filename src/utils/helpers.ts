@@ -5,7 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const formatCurrency = (amount: number, currency = 'USD') => {
+export const formatCurrency = (amount: number, currency = 'PKR') => {
+  // For Pakistani Rupees, we'll use a custom format since PKR might not be fully supported
+  // in all browsers with Intl.NumberFormat
+  if (currency === 'PKR') {
+    return `RS ${amount.toLocaleString('en-US')}`;
+  }
+
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,

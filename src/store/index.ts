@@ -10,6 +10,7 @@ import '../services/authApi';
 import '../services/propertyApi';
 import '../services/bookingApi';
 import '../services/facilitiesApi';
+import '../services/reviewApi';
 
 export const store = configureStore({
   reducer: {

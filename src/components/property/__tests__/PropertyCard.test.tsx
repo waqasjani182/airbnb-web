@@ -39,7 +39,7 @@ describe('PropertyCard Component', () => {
     expect(screen.getByText('Beautiful Beachfront Villa')).toBeInTheDocument();
     expect(screen.getByText('Miami • 8 guests')).toBeInTheDocument();
     expect(screen.getByText(/Stunning oceanfront property/)).toBeInTheDocument();
-    expect(screen.getByText('$250.00')).toBeInTheDocument();
+    expect(screen.getByText('RS 250')).toBeInTheDocument();
     expect(screen.getByText('/ night')).toBeInTheDocument();
   });
 

@@ -209,6 +209,8 @@ const Bookings: React.FC = () => {
                     key={booking.booking_id}
                     booking={booking}
                     onUpdateStatus={handleUpdateBookingStatus}
+                    showReviewActions={true}
+                    hasReview={booking.has_review || false}
                   />
                 ))
               )}

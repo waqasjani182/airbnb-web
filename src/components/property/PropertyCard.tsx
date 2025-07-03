@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Property } from '../../types';
-import { Card, Badge, Loading } from '../ui';
+import { Card, Badge, Loading, StarRating } from '../ui';
 import { formatCurrency } from '../../utils/helpers';
 import { useLazyCheckPropertyAvailabilityQuery } from '../../services/bookingApi';
 
@@ -64,8 +64,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
           <div className="absolute top-3 right-3 flex flex-col gap-2">
             {property.rating && property.rating > 0 && (
-              <Badge variant="success" className="bg-white text-gray-800">
-                ⭐ {property.rating.toFixed(1)}
+              <Badge variant="success" className="bg-white text-gray-800 flex items-center gap-1">
+                <StarRating rating={property.rating} size="sm" />
               </Badge>
             )}
 

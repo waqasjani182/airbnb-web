@@ -18,6 +18,8 @@ export const ROUTES = {
   BOOKING_CONFIRMATION: '/booking-confirmation',
   PERSONAL_INFO: '/profile/personal-info',
   SETTINGS: '/profile/settings',
+  REVIEWS: '/reviews',
+  MY_REVIEWS: '/my-reviews',
 } as const;
 
 export const PROPERTY_TYPES = [

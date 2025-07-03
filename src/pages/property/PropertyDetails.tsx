@@ -5,6 +5,7 @@ import { RootState } from '../../store';
 import { Layout } from '../../components/layout';
 import { Button, Card, Badge, Loading } from '../../components/ui';
 import BookingForm from '../../components/booking/BookingForm';
+import { PropertyReviews } from '../../components/reviews';
 import { formatCurrency } from '../../utils/helpers';
 import { useGetPropertyByIdQuery } from '../../services/propertyApi';
 import { ROUTES } from '../../utils/constants';
@@ -264,38 +265,10 @@ const PropertyDetails: React.FC = () => {
             </Card>
 
             {/* Reviews */}
-            <Card>
-              <h2 className="text-xl font-semibold mb-4">
-                Reviews ({property.review_count || 0})
-              </h2>
-              {property.reviews && property.reviews.length > 0 ? (
-                <div className="space-y-4">
-                  {property.reviews.map((review) => (
-                    <div key={review.review_id} className="border-b border-gray-200 pb-4 last:border-b-0">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                            {review.user_name[0]}
-                          </div>
-                          <span className="font-medium">{review.user_name}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <span className="text-yellow-400">{'⭐'.repeat(review.rating)}</span>
-                        </div>
-                      </div>
-                      <p className="text-gray-700">{review.comment}</p>
-                      <p className="text-sm text-gray-500 mt-1">
-                        {new Date(review.created_at).toLocaleDateString()}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8 text-gray-500">
-                  <p>No reviews yet. Be the first to review this property!</p>
-                </div>
-              )}
-            </Card>
+            <PropertyReviews
+              propertyId={property.property_id}
+              propertyTitle={property.title}
+            />
           </div>
 
           {/* Booking Sidebar */}

@@ -285,6 +285,8 @@ const PropertyBookings: React.FC = () => {
                 booking={booking}
                 onUpdateStatus={handleUpdateBookingStatus}
                 onViewGuest={handleViewGuest}
+                showHostReviewActions={true}
+                hasHostReview={booking.has_host_review || false}
               />
             ))
           )}
