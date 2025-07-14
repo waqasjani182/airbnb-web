@@ -22,7 +22,7 @@ const Header: React.FC = () => {
           {/* Logo */}
           <Link to={ROUTES.HOME} className="flex items-center">
             <div className="text-3xl font-bold text-red-600 tracking-tight">
-              AirBed
+              Air Bed &amp; Breakfast
             </div>
           </Link>
 

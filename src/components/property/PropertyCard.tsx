@@ -10,13 +10,15 @@ interface PropertyCardProps {
   checkInDate?: string;
   checkOutDate?: string;
   guests?: number;
+  showOwnerControls?: boolean;
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
   property,
   checkInDate,
   checkOutDate,
-  guests
+  guests,
+  showOwnerControls = false
 }) => {
   const [availabilityStatus, setAvailabilityStatus] = useState<'checking' | 'available' | 'unavailable' | null>(null);
   const [checkAvailability, { isLoading: isCheckingAvailability }] = useLazyCheckPropertyAvailabilityQuery();
@@ -56,10 +58,32 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             alt={property.title}
             className="w-full h-48 object-cover"
           />
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-3 left-3 flex flex-col gap-1">
             <Badge variant="default" className="bg-white text-gray-800">
               {property.property_type}
             </Badge>
+
+            {/* Owner Status Indicators */}
+            {showOwnerControls && (
+              <>
+                {property.status && (
+                  <Badge
+                    variant={property.status === 'active' ? 'success' : 'warning'}
+                    className="bg-white text-xs"
+                  >
+                    {property.status === 'active' ? 'Active' : 'Maintenance'}
+                  </Badge>
+                )}
+                {property.is_active !== undefined && (
+                  <Badge
+                    variant={property.is_active ? 'success' : 'error'}
+                    className="bg-white text-xs"
+                  >
+                    {property.is_active ? 'Enabled' : 'Disabled'}
+                  </Badge>
+                )}
+              </>
+            )}
           </div>
 
           <div className="absolute top-3 right-3 flex flex-col gap-2">

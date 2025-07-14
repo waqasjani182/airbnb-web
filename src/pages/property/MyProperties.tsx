@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import { RootState } from '../../store';
 import { Layout } from '../../components/layout';
 import { Button, Card, Badge, Loading } from '../../components/ui';
 import { useGetUserPropertiesQuery, useDeletePropertyMutation } from '../../services/propertyApi';
@@ -10,8 +12,11 @@ import { ROUTES } from '../../utils/constants';
 import { Property } from '../../types/property.types';
 
 const MyProperties: React.FC = () => {
-  const navigate = useNavigate();
   const { handleError } = useErrorHandler();
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  // Debug user info
+  console.log('MyProperties - Current user:', user);
   const [deletingPropertyId, setDeletingPropertyId] = useState<number | null>(null);
 
   const {
@@ -19,6 +24,9 @@ const MyProperties: React.FC = () => {
     isLoading,
     error
   } = useGetUserPropertiesQuery();
+
+  // Debug properties data
+  console.log('MyProperties - Properties data:', propertiesData);
 
   const [deleteProperty] = useDeletePropertyMutation();
 
@@ -135,6 +143,7 @@ interface PropertyCardProps {
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property, onDelete, isDeleting }) => {
+  const navigate = useNavigate();
   return (
     <Card padding="none" className="overflow-hidden">
       <div className="relative">
@@ -143,10 +152,27 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onDelete, isDelet
           alt={property.title}
           className="w-full h-48 object-cover"
         />
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3 flex flex-col gap-1">
           <Badge variant="default" className="bg-white text-gray-800">
             {property.property_type}
           </Badge>
+          {/* Status indicators */}
+          {property.status && (
+            <Badge
+              variant={property.status === 'active' ? 'success' : 'warning'}
+              className="bg-white text-xs"
+            >
+              {property.status === 'active' ? 'Active' : 'Maintenance'}
+            </Badge>
+          )}
+          {property.is_active !== undefined && (
+            <Badge
+              variant={property.is_active ? 'success' : 'error'}
+              className="bg-white text-xs"
+            >
+              {property.is_active ? 'Enabled' : 'Disabled'}
+            </Badge>
+          )}
         </div>
         {property.rating && property.rating > 0 && (
           <div className="absolute top-3 right-3">
@@ -188,33 +214,43 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onDelete, isDelet
           </div>
         </div>
 
-        <div className="flex space-x-2">
-          <Link to={`/property/${property.property_id}`} className="flex-1">
-            <Button variant="outline" size="sm" className="w-full">
-              View
+        <div className="space-y-2">
+          <div className="flex space-x-2">
+            <Link to={`/property/${property.property_id}`} className="flex-1">
+              <Button variant="outline" size="sm" className="w-full">
+                View
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1"
+              onClick={() => navigate(`/property/${property.property_id}/edit`)}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              onClick={() => onDelete(property.property_id)}
+              isLoading={isDeleting}
+              disabled={isDeleting}
+            >
+              Delete
+            </Button>
+          </div>
+
+          {/* Status Management Button */}
+          <Link to={`/property/${property.property_id}/status`} className="block">
+            <Button variant="outline" size="sm" className="w-full text-blue-600 hover:text-blue-700 hover:bg-blue-50">
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Manage Status
             </Button>
           </Link>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1"
-            onClick={() => {
-              // TODO: Implement edit functionality
-              toast('Edit functionality coming soon!');
-            }}
-          >
-            Edit
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-            onClick={() => onDelete(property.property_id)}
-            isLoading={isDeleting}
-            disabled={isDeleting}
-          >
-            Delete
-          </Button>
         </div>
       </div>
     </Card>

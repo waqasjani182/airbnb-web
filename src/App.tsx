@@ -11,7 +11,9 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Search from './pages/property/Search';
 import PropertyDetails from './pages/property/PropertyDetails';
 import UploadProperty from './pages/property/UploadProperty';
+import EditProperty from './pages/property/EditProperty';
 import MyProperties from './pages/property/MyProperties';
+import PropertyStatusManagement from './pages/property/PropertyStatusManagement';
 import Bookings from './pages/booking/Bookings';
 import PropertyBookings from './pages/booking/PropertyBookings';
 import BookingDetails from './pages/booking/BookingDetails';
@@ -51,10 +53,26 @@ function App() {
                 }
               />
               <Route
+                path={ROUTES.EDIT_PROPERTY}
+                element={
+                  <ProtectedRoute>
+                    <EditProperty />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path={ROUTES.MY_PROPERTIES}
                 element={
                   <ProtectedRoute>
                     <MyProperties />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={ROUTES.PROPERTY_STATUS_MANAGEMENT}
+                element={
+                  <ProtectedRoute>
+                    <PropertyStatusManagement />
                   </ProtectedRoute>
                 }
               />

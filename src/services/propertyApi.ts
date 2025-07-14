@@ -1,13 +1,19 @@
 import { apiSlice } from '../store/api/apiSlice';
-import { 
-  Property, 
-  PropertyResponse, 
+import {
+  Property,
+  PropertyResponse,
   PropertySearchParams,
   CreatePropertyRequest,
   CreatePropertyResponse,
   UpdatePropertyRequest,
   UpdatePropertyResponse,
-  DeletePropertyResponse
+  DeletePropertyResponse,
+  PropertyStatusResponse,
+  SetMaintenanceRequest,
+  SetMaintenanceResponse,
+  ActivatePropertyResponse,
+  TogglePropertyRequest,
+  TogglePropertyResponse
 } from '../types/property.types';
 
 export const propertyApi = apiSlice.injectEndpoints({
@@ -103,6 +109,43 @@ export const propertyApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: 'Property', id }, 'Property'],
     }),
+
+    // Property Status Management Endpoints
+
+    // GET /api/properties/{id}/status
+    getPropertyStatus: builder.query<PropertyStatusResponse, number>({
+      query: (id) => `/api/properties/${id}/status`,
+      providesTags: (result, error, id) => [{ type: 'Property', id }],
+    }),
+
+    // PUT /api/properties/{id}/maintenance
+    setPropertyMaintenance: builder.mutation<SetMaintenanceResponse, { id: number; data: SetMaintenanceRequest }>({
+      query: ({ id, data }) => ({
+        url: `/api/properties/${id}/maintenance`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Property', id }, 'Property'],
+    }),
+
+    // PUT /api/properties/{id}/activate
+    activateProperty: builder.mutation<ActivatePropertyResponse, number>({
+      query: (id) => ({
+        url: `/api/properties/${id}/activate`,
+        method: 'PUT',
+      }),
+      invalidatesTags: (result, error, id) => [{ type: 'Property', id }, 'Property'],
+    }),
+
+    // PUT /api/properties/{id}/toggle
+    togglePropertyStatus: builder.mutation<TogglePropertyResponse, { id: number; data: TogglePropertyRequest }>({
+      query: ({ id, data }) => ({
+        url: `/api/properties/${id}/toggle`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Property', id }, 'Property'],
+    }),
   }),
   overrideExisting: false,
 });
@@ -117,4 +160,8 @@ export const {
   useGetUserPropertiesQuery,
   useUploadPropertyImageMutation,
   useUploadPropertyImagesMutation,
+  useGetPropertyStatusQuery,
+  useSetPropertyMaintenanceMutation,
+  useActivatePropertyMutation,
+  useTogglePropertyStatusMutation,
 } = propertyApi;

@@ -21,6 +21,10 @@ export interface Property {
   total_bedrooms?: number;
   total_rooms?: number;
   total_beds?: number;
+  status?: 'active' | 'maintenance';
+  is_active?: boolean;
+  can_accept_bookings?: boolean;
+  maintenance_reason?: string;
   images: PropertyImage[];
   facilities: PropertyFacility[];
   reviews: PropertyReview[];
@@ -117,4 +121,37 @@ export interface UpdatePropertyResponse {
 
 export interface DeletePropertyResponse {
   message: string;
+}
+
+// Property Status Management Types
+export interface PropertyStatusResponse {
+  property_id: number;
+  title: string;
+  status: 'active' | 'maintenance';
+  is_active: boolean;
+  can_accept_bookings: boolean;
+}
+
+export interface SetMaintenanceRequest {
+  maintenance_reason: string;
+}
+
+export interface SetMaintenanceResponse {
+  message: string;
+  property: Property;
+  maintenance_reason: string;
+}
+
+export interface ActivatePropertyResponse {
+  message: string;
+  property: Property;
+}
+
+export interface TogglePropertyRequest {
+  is_active: boolean;
+}
+
+export interface TogglePropertyResponse {
+  message: string;
+  property: Property;
 }
