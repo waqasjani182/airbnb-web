@@ -189,3 +189,56 @@ export interface BookingDetailData {
 export interface BookingDetailResponse {
   booking: BookingDetailData;
 }
+
+// New types for Bookings with Ratings by Date Range endpoint
+export interface BookingWithRatings {
+  booking_id: number;
+  user_ID: number;
+  property_id: number;
+  status: string;
+  booking_date: string;
+  start_date: string;
+  end_date: string;
+  total_amount: number;
+  guests: number;
+  property_title: string;
+  property_city: string;
+  property_address: string;
+  property_type: string;
+  rent_per_day: number;
+  guest_name: string;
+  guest_email: string;
+  guest_profile_image: string;
+  host_name: string;
+  host_email: string;
+  host_profile_image: string;
+  user_rating?: number;
+  user_review?: string;
+  owner_rating?: number;
+  owner_review?: string;
+  property_rating?: number;
+  property_review?: string;
+  property_image: string;
+}
+
+export interface BookingsByDateRangeParams {
+  from_date: string;
+  to_date: string;
+}
+
+export interface BookingsByDateRangeResponse {
+  date_range: {
+    from_date: string;
+    to_date: string;
+  };
+  bookings: BookingWithRatings[];
+  total_count: number;
+  statistics: {
+    total_bookings: number;
+    bookings_with_ratings: number;
+    average_property_rating: string;
+    average_user_rating: string;
+    average_owner_rating: string;
+    total_revenue: string;
+  };
+}

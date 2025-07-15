@@ -13,7 +13,8 @@ import {
   SetMaintenanceResponse,
   ActivatePropertyResponse,
   TogglePropertyRequest,
-  TogglePropertyResponse
+  TogglePropertyResponse,
+  PropertiesByCityResponse
 } from '../types/property.types';
 
 export const propertyApi = apiSlice.injectEndpoints({
@@ -146,6 +147,15 @@ export const propertyApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, { id }) => [{ type: 'Property', id }, 'Property'],
     }),
+
+    // GET /api/properties/city/{cityName} - Get properties by city with ratings
+    getPropertiesByCity: builder.query<PropertiesByCityResponse, string>({
+      query: (cityName) => `/api/properties/city/${encodeURIComponent(cityName)}`,
+      providesTags: (result, error, cityName) => [
+        { type: 'Property', id: `city-${cityName}` },
+        'Property',
+      ],
+    }),
   }),
   overrideExisting: false,
 });
@@ -164,4 +174,5 @@ export const {
   useSetPropertyMaintenanceMutation,
   useActivatePropertyMutation,
   useTogglePropertyStatusMutation,
+  useGetPropertiesByCityQuery,
 } = propertyApi;

@@ -20,6 +20,7 @@ import BookingDetails from './pages/booking/BookingDetails';
 import BookingConfirmation from './pages/booking/BookingConfirmation';
 import Profile from './pages/profile/Profile';
 import { UserReviews } from './pages/reviews';
+import AnalyticsPage from './pages/analytics/AnalyticsPage';
 import { ProtectedRoute, ErrorBoundary, GlobalLoading } from './components/common';
 import AuthInitializer from './components/common/AuthInitializer';
 
@@ -121,6 +122,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <UserReviews />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path={ROUTES.ANALYTICS}
+                element={
+                  <ProtectedRoute>
+                    <AnalyticsPage />
                   </ProtectedRoute>
                 }
               />

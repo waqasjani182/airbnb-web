@@ -73,6 +73,11 @@ const Header: React.FC = () => {
                     Dashboard
                   </Button>
                 </Link>
+                <Link to={ROUTES.ANALYTICS}>
+                  <Button variant="ghost" size="sm">
+                    Analytics
+                  </Button>
+                </Link>
                 <Link to={ROUTES.PROFILE}>
                   <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
                     {user?.first_name?.[0]?.toUpperCase()}

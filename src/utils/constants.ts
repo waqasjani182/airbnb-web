@@ -22,6 +22,7 @@ export const ROUTES = {
   SETTINGS: '/profile/settings',
   REVIEWS: '/reviews',
   MY_REVIEWS: '/my-reviews',
+  ANALYTICS: '/analytics',
 } as const;
 
 export const PROPERTY_TYPES = [

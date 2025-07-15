@@ -10,7 +10,9 @@ import {
   AvailabilityResponse,
   PriceCalculationRequest,
   PriceCalculationResponse,
-  BookingDetailResponse
+  BookingDetailResponse,
+  BookingsByDateRangeParams,
+  BookingsByDateRangeResponse
 } from '../types/booking.types';
 
 export const bookingApi = apiSlice.injectEndpoints({
@@ -80,6 +82,18 @@ export const bookingApi = apiSlice.injectEndpoints({
         body: priceData,
       }),
     }),
+
+    // GET /api/bookings/date-range - Get bookings with ratings by date range
+    getBookingsByDateRange: builder.query<BookingsByDateRangeResponse, BookingsByDateRangeParams>({
+      query: ({ from_date, to_date }) => ({
+        url: '/api/bookings/date-range',
+        params: {
+          from_date,
+          to_date,
+        },
+      }),
+      providesTags: ['Booking'],
+    }),
   }),
   overrideExisting: false,
 });
@@ -93,4 +107,5 @@ export const {
   useCheckPropertyAvailabilityQuery,
   useLazyCheckPropertyAvailabilityQuery,
   useCalculateBookingPriceMutation,
+  useGetBookingsByDateRangeQuery,
 } = bookingApi;

@@ -155,3 +155,40 @@ export interface TogglePropertyResponse {
   message: string;
   property: Property;
 }
+
+// New types for Properties by City with Ratings endpoint
+export interface PropertyWithRatings {
+  property_id: number;
+  user_id: number;
+  property_type: string;
+  rent_per_day: number;
+  address: string;
+  rating: number;
+  city: string;
+  longitude: number;
+  latitude: number;
+  title: string;
+  description: string;
+  guest: number;
+  status: string;
+  is_active: boolean;
+  host_name: string;
+  host_profile_image: string;
+  property_image: string;
+  total_rating: number;
+  review_count: number;
+  avg_user_rating: number;
+  avg_owner_rating: number;
+  images: string[];
+  facilities: Array<{
+    facility_id: number;
+    facility_type: string;
+  }>;
+}
+
+export interface PropertiesByCityResponse {
+  city: string;
+  properties: PropertyWithRatings[];
+  total_count: number;
+  average_city_rating: string;
+}
