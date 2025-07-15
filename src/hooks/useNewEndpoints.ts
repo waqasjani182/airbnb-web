@@ -105,7 +105,7 @@ export const endpointUtils = {
    */
   getTopRatedProperties: (data: PropertiesByCityResponse | undefined, limit = 5): PropertyWithRatings[] => {
     if (!data?.properties) return [];
-    return data.properties
+    return [...data.properties]
       .sort((a, b) => b.total_rating - a.total_rating)
       .slice(0, limit);
   },
